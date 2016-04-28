@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	 <meta name="viewport" content="width=device-width",initial-scale=1.0>
+	<title>Document</title>
+</head>
+<style>
+	body,ul,li{
+		margin: 0px;
+		padding: 0px;
+		list-style: none;
+	}
+	
+	.box{
+		width: 100%;
+		height: 420px;
+		border: 1px solid red;
+		overflow: hidden;
+	}
+	.box .inner{
+		width: 500%;
+		height: 100%;
+		border: 1px solid blue;
+	}
+	.inner li{
+		width: 20%;
+		height: 100%;
+		float: left;
+		font-size: 100px;
+		line-height: 420px;
+		text-align: center;
+		color: #fff;
+	}
+	.inner li:nth-child(1){
+		background:red;
+	}
+	.inner li:nth-child(2){
+		background:blue;
+	}
+	.inner li:nth-child(3){
+		background:pink;
+	}
+	.inner li:nth-child(4){
+		background:green;
+	}
+	.inner li:nth-child(5){
+		background:yellow;
+	}
+</style>
+<body>
+	<div class="box">
+		<ul class="inner">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+	</div>
+</body>
+<script>
+	var box=document.querySelector('.box');
+	var inner=box.querySelector('.inner');
+	var bw=box.offsetWidth;
+	var lis=inner.querySelectorAll('li');
+	var movex=0;
+	var nx=0;//获取鼠标移动后的位置
+	var wx=0;//移动的距离；
+	var i=0;//定义下表变量；
+	var dir;
+	var mobile='ontouchstart' in window;
+	var mousedown=mobile?'touchstart':'mousedown';
+	var mousemove=mobile?'touchmove':'mousemove';
+	var mouseup=mobile?'touchend':'mouseup';
+	console.log(window)
+	inner.addEventListener(mousedown,down);
+	function down(e){
+		e.preventDefault()
+		var strtime=e.timeStamp;
+		var e=mobile?e.changedTouches[0]:e;
+		var cx=e.clientX;//获取刚开始的位置
+
+		document.addEventListener(mousemove,move)
+		function move(e){
+		var e=mobile?e.changedTouches[0]:e;	
+		nx=e.clientX;//获取鼠标移动后的位置；
+		wx=nx-cx;
+		inner.style.transform='translateX('+(wx+movex)+'px)';
+		inner.style.transition='none';
+		}
+		dir=wx<0?'left':'right';
+		document.addEventListener(mouseup,up)
+		function up(e){	
+		document.removeEventListener(mousemove,move)
+			var endtime=e.timeStamp;
+			// var e=mobile?e.changedTouches[0]:e;
+			time=endtime-strtime;
+			if(Math.abs(wx)>bw/2||(time<100 && Math.abs(wx)>30)){
+				if(dir=='left'){
+					i++;
+				}else if(dir=='right'){
+					i--;
+				}
+				if(i<0){i=0}
+				if(i>lis.length-1){i=lis.length-1}
+				movex=-i*bw;
+				inner.style.transition='transform .3s';
+				inner.style.transform='translateX('+movex+'px)';
+				
+			}else if(Math.abs(wx)<bw/2){
+				movex=-i*bw;
+				inner.style.transition='transform .3s';
+				inner.style.transform='translateX('+movex+'px)';
+			} 
+			document.removeEventListener(mouseup,up)
+		}
+		
+			
+		
+	}
+</script>
+</html>
