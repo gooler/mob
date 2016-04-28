@@ -81,7 +81,7 @@
 		var e=mobile?e.changedTouches[0]:e;
 		var cx=e.clientX;//获取刚开始的位置
 
-		document.addEventListener(mousemove,move)
+		inner.addEventListener(mousemove,move)
 		function move(e){
 		var e=mobile?e.changedTouches[0]:e;	
 		nx=e.clientX;//获取鼠标移动后的位置；
@@ -90,9 +90,9 @@
 		inner.style.transition='none';
 		}
 		dir=wx<0?'left':'right';
-		document.addEventListener(mouseup,up)
+		inner.addEventListener(mouseup,up)
 		function up(e){	
-		document.removeEventListener(mousemove,move)
+		inner.removeEventListener(mousemove,move)
 			var endtime=e.timeStamp;
 			// var e=mobile?e.changedTouches[0]:e;
 			time=endtime-strtime;
@@ -113,7 +113,7 @@
 				inner.style.transition='transform .3s';
 				inner.style.transform='translateX('+movex+'px)';
 			} 
-			document.removeEventListener(mouseup,up)
+			inner.removeEventListener(mouseup,up)
 		}
 		
 			
